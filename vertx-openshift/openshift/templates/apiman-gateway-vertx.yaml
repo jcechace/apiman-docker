@@ -60,6 +60,15 @@ objects:
           - name: api
             containerPort: 8081
             protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - '-c'
+                - >-
+                  curl -G --fail --silent -u
+                  ${APIMAN_AUTH_USERNAME}:${APIMAN_AUTH_PASSWORD}
+                  localhost:8081/system/status > /dev/null
           env:
           - name: APIMAN_AUTH_USERNAME
             valueFrom:
